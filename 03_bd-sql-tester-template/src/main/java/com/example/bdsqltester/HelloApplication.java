@@ -19,7 +19,7 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         HelloApplication.applicationInstance = this;
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("llogin-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         primaryStage = stage;
 
