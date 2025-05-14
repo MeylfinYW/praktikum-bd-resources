@@ -95,6 +95,10 @@ public class LoginController {
                     Scene scene = new Scene(loader.load());
                     app.getPrimaryStage().setScene(scene);
                 } else {
+                    int userId = getUserIdByUsername(username);
+                    if (userId == -1) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                    }
                     // Load the user view
                     app.getHostServices().showDocument("user-view.fxml");
                 }
