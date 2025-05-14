@@ -355,6 +355,15 @@ public class AdminController {
     } // End of onTestButtonClick method
 
     @FXML
-    void onDeleteAssignmentClick(ActionEvent event)
+    void onDeleteAssignmentClick(ActionEvent event) {
+        if (idField.getText().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("No Assignment Selected");
+            alert.setContentText("Please select an assignment to delete.");
+            alert.showAndWait();
+            return;
+        }
 
-}
+
+    }
