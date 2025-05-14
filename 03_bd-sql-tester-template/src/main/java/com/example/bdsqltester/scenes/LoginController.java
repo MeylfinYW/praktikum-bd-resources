@@ -98,6 +98,10 @@ public class LoginController {
                     int userId = getUserIdByUsername(username);
                     if (userId == -1) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Login Error");
+                        alert.setHeaderText("User Not Found");
+                        alert.setContentText("Cannot find user ID in database.");
+                        alert.showAndWait();
                     }
                     // Load the user view
                     app.getHostServices().showDocument("user-view.fxml");
