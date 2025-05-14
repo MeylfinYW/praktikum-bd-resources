@@ -24,3 +24,14 @@ public class UserController {
     @FXML private Label gradeLabel;
 
     Connection connection = MainDataSource.getConnection();
+    private int userId;
+
+    public UserController() throws SQLException {
+
+    }
+
+    public void setUserId(int id) {
+        this.userId = id;
+    }
+
+}
