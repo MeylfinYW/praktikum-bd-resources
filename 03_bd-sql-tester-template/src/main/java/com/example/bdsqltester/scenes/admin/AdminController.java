@@ -391,4 +391,16 @@ public class AdminController {
                     successAlert.setHeaderText("Assignment Deleted");
                     successAlert.setContentText("The assignment has been successfully deleted.");
                     successAlert.showAndWait();
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Database Error");
+                    errorAlert.setHeaderText("Failed to delete assignment");
+                    errorAlert.setContentText(e.getMessage());
+                    errorAlert.showAndWait();
+                }
+            }
+        });
     }
+}
