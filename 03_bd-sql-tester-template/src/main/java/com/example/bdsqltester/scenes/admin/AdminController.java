@@ -187,6 +187,74 @@ public class AdminController {
             alert.showAndWait();
             return;
         }
+
+        long assignmentId = Long.parseLong(idField.getText());
+
+        TableView<ArrayList<String>> tableView = new TableView<>();
+        ObservableList<ArrayList<String>> data = FXCollections.observableArrayList();
+        ArrayList<String> headers = new ArrayList<>();
+
+        try (Connection conn = MainDataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(
+                     "SELECT u.username, g.grade FROM grades g JOIN users u ON g.user_id = u.id WHERE g.assignment_id = ?"
+             )) {
+            stmt.setLong(1, assignmentId);
+            ResultSet rs = stmt.executeQuery();
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            for (int i = 1; i <= columnCount; i++) {
+                final int columnIndex = i - 1;
+                String headerText = metaData.getColumnLabel(i);
+                headers.add(headerText);
+
+                TableColumn<ArrayList<String>, String> column = new TableColumn<>(headerText);
+                column.setCellValueFactory(cellData -> {
+                    ArrayList<String> rowData = cellData.getValue();
+                    if (rowData != null && columnIndex < rowData.size()) {
+                        return new SimpleStringProperty(rowData.get(columnIndex));
+                    } else {
+                        return new SimpleStringProperty("");
+                    }
+                });
+                column.setPrefWidth(150);
+                tableView.getColumns().add(column);
+            }
+
+            while (rs.next()) {
+                ArrayList<String> row = new ArrayList<>();
+                for (int i = 1; i <= columnCount; i++) {
+                    String value = rs.getString(i);
+                    row.add(value != null ? value : "");
+                }
+                data.add(row);
+            }
+
+            if (data.isEmpty()) {
+                Alert infoAlert = new Alert(Alert.AlertType.INFORMATION);
+                infoAlert.setTitle("No Grades");
+                infoAlert.setHeaderText(null);
+                infoAlert.setContentText("There are no grades submitted for this assignment yet.");
+                infoAlert.showAndWait();
+                return;
+            }
+
+            tableView.setItems(data);
+            StackPane root = new StackPane(tableView);
+            Scene scene = new Scene(root, 400, 300);
+            Stage stage = new Stage();
+            stage.setTitle("Grades for Assignment ID: " + assignmentId);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Database Error");
+            errorAlert.setHeaderText("Could not retrieve grades.");
+            errorAlert.setContentText(e.getMessage());
+            errorAlert.showAndWait();
+        }
     }
 
     @FXML
@@ -286,5 +354,7 @@ public class AdminController {
         }
     } // End of onTestButtonClick method
 
+    @FXML
+    void onDeleteAssignmentClick(ActionEvent event)
 
 }
