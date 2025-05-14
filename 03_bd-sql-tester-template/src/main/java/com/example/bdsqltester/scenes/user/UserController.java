@@ -34,4 +34,16 @@ public class UserController {
         this.userId = id;
     }
 
+    @FXML
+    public void initialize() {
+        if (connection == null) {
+            showAlert("Error", "Database connection is not established.");
+            return;
+        }
+        loadAssignments();
+        assignmentList.setOnMouseClicked(this::onAssignmentSelected);
+
+    }
+
+
 }
