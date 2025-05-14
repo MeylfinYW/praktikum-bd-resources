@@ -107,6 +107,10 @@ public class LoginController {
 
                     // Load the user view
                     app.getPrimaryStage().setTitle("User View");
+
+                    try {
+                        FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("user-view.fxml"));
+                    }
                 }
             } else {
                 // Show an error message
