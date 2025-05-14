@@ -26,6 +26,8 @@ public class LoginController {
     @FXML
     private TextField usernameField;
 
+    private int getUserIdByUsername(String username) throws SQLException
+
     boolean verifyCredentials(String username, String password, String role) throws SQLException {
         // Call the database to verify the credentials
         // This is insecure as this stores the password in plain text.
