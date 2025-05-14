@@ -26,7 +26,17 @@ public class LoginController {
     @FXML
     private TextField usernameField;
 
-    private int getUserIdByUsername(String username) throws SQLException
+    private int getUserIdByUsername(String username) throws SQLException {
+        try (Connection c = MainDataSource.getConnection()) {
+            PreparedStatement stmt = c.prepareStatement("SELECT id FROM users WHERE username = ?");
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        }
+        return -1;
+    }
 
     boolean verifyCredentials(String username, String password, String role) throws SQLException {
         // Call the database to verify the credentials
