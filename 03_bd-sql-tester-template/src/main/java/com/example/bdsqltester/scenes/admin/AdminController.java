@@ -365,5 +365,30 @@ public class AdminController {
             return;
         }
 
+        long assignmentId = Long.parseLong(idField.getText());
 
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirm Deletion");
+        confirmationAlert.setHeaderText("Are you sure you want to delete this assignment?");
+        confirmationAlert.setContentText("This action cannot be undone.");
+        confirmationAlert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                try (Connection conn = MainDataSource.getConnection()) {
+                    String deleteQuery = "DELETE FROM assignments WHERE id = ?";
+                    PreparedStatement stmt = conn.prepareStatement(deleteQuery);
+                    stmt.setLong(1, assignmentId);
+                    stmt.executeUpdate();
+
+                    refreshAssignmentList();
+
+                    idField.clear();
+                    nameField.clear();
+                    instructionsField.clear();
+                    answerKeyField.clear();
+
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Success");
+                    successAlert.setHeaderText("Assignment Deleted");
+                    successAlert.setContentText("The assignment has been successfully deleted.");
+                    successAlert.showAndWait();
     }
