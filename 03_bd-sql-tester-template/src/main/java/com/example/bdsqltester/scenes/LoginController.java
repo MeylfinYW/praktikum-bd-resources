@@ -2,10 +2,12 @@ package com.example.bdsqltester.scenes;
 
 import com.example.bdsqltester.HelloApplication;
 import com.example.bdsqltester.datasources.MainDataSource;
+import com.example.bdsqltester.scenes.user.UserController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
@@ -110,7 +112,17 @@ public class LoginController {
 
                     try {
                         FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("user-view.fxml"));
+                        Parent root = loader.load();
+
+                        UserController userController = loader.getController();
+                        userController.setUserId(userId);
+
+                        Scene scene = new Scene(root);
+                        app.getPrimaryStage().setScene(scene);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
+
                 }
             } else {
                 // Show an error message
