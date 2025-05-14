@@ -102,9 +102,11 @@ public class LoginController {
                         alert.setHeaderText("User Not Found");
                         alert.setContentText("Cannot find user ID in database.");
                         alert.showAndWait();
+                        return;
                     }
+
                     // Load the user view
-                    app.getHostServices().showDocument("user-view.fxml");
+                    app.getPrimaryStage().setTitle("User View");
                 }
             } else {
                 // Show an error message
